@@ -1,0 +1,48 @@
+<tool id="taxonmatcher" name="Taxonmatcher">
+    <description>Find taxonomy</description>
+    <command interpreter="bash">
+        taxonmatcher.sh
+        $input_type.input
+        $input_type.type
+        $reference
+        $output
+    </command>
+    <macros>
+        <macro name="blast_input">
+            <param format="tabular" name="input" type="data" label="BLAST output with taxonomy"/>
+        </macro>
+        <macro name="nameslist_input">
+            <param format="txt" name="input" type="data" label="Textfile with a list of species names"/>
+        </macro>
+    </macros>
+    <inputs>
+        <conditional name="input_type">
+            <param name="type" type="select" multiple="false" label="Input type">
+                <option value="blast" selected="true">BLAST output</option>
+                <option value="nameslist">Textfile containing a list of names</option>
+            </param>
+            <when value="blast">
+                <expand macro="blast_input"/>
+            </when>
+            <when value="nameslist">
+                <expand macro="nameslist_input"/>
+            </when>
+        </conditional>
+        <param name="reference" type="select" multiple="false" label="Reference database">
+            <option value="nsr" selected="true">Nederlands soorten register</option>
+        </param>
+    </inputs>
+    <outputs>
+        <data format="tabular" type="data" name="output" label="$input_type.input.display_name taxonmatcher"/>
+        <!--<data format="txt" name="output_log" label="$input.display_name taxonmatcher log"/>-->
+    </outputs>
+    <tests>
+        <test>
+            <param name="test_input" value="test_input.txt"/>
+            <output name="test_outout" file="test_output.txt"/>
+        </test>
+    </tests>
+    <help>
+        Find taxonomy in a reference database
+    </help>
+</tool>
