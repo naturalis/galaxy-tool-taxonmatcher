@@ -2,7 +2,7 @@
 Find for your input taxonomy the taxonomy from an other database
 ## Getting Started
 ### Prerequisites
-Jellyfish https://github.com/jamesturk/jellyfish
+Jellyfish https://github.com/jamesturk/jellyfish<br />
 fuzzy wuzzy https://github.com/seatgeek/fuzzywuzzy
 python3
 ### Installing
