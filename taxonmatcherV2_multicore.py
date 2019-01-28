@@ -81,7 +81,8 @@ def matchSpeciesGenus(taxonomyList, taxonomyHit, rank):
 
 def matchFamily(taxonomyHit, rank):
     nsrCursor = sqlite3.connect(args.nsr).cursor()
-    nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=rank, name=taxonomyHit))
+    #nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=rank, name=taxonomyHit))
+    nsrCursor.execute("SELECT * FROM nsr WHERE {column} = ? COLLATE NOCASE".format(column=rank), (taxonomyHit,))
     hit = nsrCursor.fetchone()
     rankNumbers = {"family_rank":7, "order_rank":8, "class_rank":9, "phylum_rank":10, "kingdom_rank":11}
     if hit is not None:
@@ -116,7 +117,8 @@ def matchExact(speciesList, genusList, taxonomyHit):
         rankNumbers = {"family_rank":7, "order_rank":8, "class_rank":9, "phylum_rank":10, "kingdom_rank":11}
         rankList = {"family_rank", "order_rank", "class_rank", "phylum_rank"}
         for rank in rankList:
-            nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=rank, name=taxonomyHit))
+            #nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=rank, name=taxonomyHit))
+            nsrCursor.execute("SELECT * FROM nsr WHERE {column} = ? COLLATE NOCASE".format(column=rank), (taxonomyHit,))
             hit = nsrCursor.fetchone()
             if hit is not None:
                 return [0, taxonomyHit, hit[rankNumbers[rank]], rank, "match"]
@@ -126,7 +128,8 @@ def matchExact(speciesList, genusList, taxonomyHit):
 
 def get_entry_from_database(match):
     nsrCursor = sqlite3.connect(args.nsr).cursor()
-    nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=match[-2], name=match[-3]))
+    #nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=match[-2], name=match[-3]))
+    nsrCursor.execute("SELECT * FROM nsr WHERE {column} = ? COLLATE NOCASE".format(column=match[-2]), (match[-3],))
     hit = nsrCursor.fetchone()
     if hit is not None:
         if hit[4] == "synonym":
