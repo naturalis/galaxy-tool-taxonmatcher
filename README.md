@@ -25,3 +25,4 @@ sudo chmod 777 galaxy-tool-taxonmatcher/taxonmatcher.py
 ```
 sudo ln -s /home/galaxy/Tools/galaxy-tool-taxonmatcher/taxonmatcher.py /usr/local/bin/taxonmatcher.py
 ```
+### Creating the reference database
