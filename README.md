@@ -1,5 +1,5 @@
 # galaxy-tool-taxonmatcher
-Find for your input taxonomy the taxonomy from an other database
+Find for your input taxonomy the taxonomy from an other database, currently GBIF (beta, memory consumption need to be improved) and The Dutch species register.
 ## Getting Started
 ### Prerequisites
 Jellyfish https://github.com/jamesturk/jellyfish<br />
