@@ -10,6 +10,10 @@ fuzzy wuzzy https://github.com/seatgeek/fuzzywuzzy<br />
 ```
 pip install fuzzywuzzy[speedup]
 ```
+biopython
+```
+pip install biopython
+```
 python3
 ### Installing
 Installing the tool for use in Galaxy
