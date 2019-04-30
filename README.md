@@ -25,4 +25,16 @@ sudo chmod 777 galaxy-tool-taxonmatcher/taxonmatcher.py
 ```
 sudo ln -s /home/galaxy/Tools/galaxy-tool-taxonmatcher/taxonmatcher.py /usr/local/bin/taxonmatcher.py
 ```
-### Creating the reference database
+### Creating the reference database for GBIF
+Download the taxonomy backbone
+```
+wget http://rs.gbif.org/datasets/backbone/backbone-current.zip
+```
+unzip
+```
+unzip backbone-current.zip
+```
+Create the database (currently the path to Taxon.tsv is hardcoded)
+```
+python3 ../utilities/make_gbif_database.py
+```
