@@ -11,7 +11,7 @@ import jellyfish
 # Retrieve the commandline arguments
 parser = argparse.ArgumentParser(description='taxonmatcher')
 parser.add_argument('-i', '--input', metavar='namelist or blast output', dest='input', type=str, required=True)
-parser.add_argument('-r', '--reference', metavar='taxonomy reference', dest='reference', type=str, required=True, choices=['nsr'])
+parser.add_argument('-r', '--reference', metavar='taxonomy reference', dest='reference', type=str, required=True, choices=['nsr', 'gbif'])
 parser.add_argument('-t', '--type', dest='type', type=str, required=True, choices=['nameslist', 'blast'])
 parser.add_argument('-o', '--output', metavar='output', dest='output', type=str, required=True)
 parser.add_argument('-n', '--nsr', help='nsr reference path', dest='nsr', type=str, required=False)
@@ -19,9 +19,11 @@ parser.add_argument('-g', '--gbif', help='gbif reference path', dest='gbif', typ
 args = parser.parse_args()
 if args.reference == "nsr" and args.nsr is None:
     parser.error("missing -n/--nsr nsr sqlite reference")
+if args.reference == "gbif" and args.gbif is None:
+    parser.error("missing -g/--gbif gbif sqlite reference")
 
 def write_header():
-    if args.reference == "nsr":
+    if args.reference == "nsr" or args.reference == "gbif":
         with open(args.output, "a") as output:
             output.write("\t".join(["#Input","#MatchType","#Synonym","#Accepted name","#Taxon rank", "#Kingdom","#Phylum","#Class","#Order","#Family","#Genus","#Metadata","#Input read"]) + "\n")
 
@@ -46,7 +48,15 @@ def read_nameslist_input():
     return taxonomyHits
 
 def getSpeciesList(nsrCursor):
-    nsrCursor.execute("SELECT species_rank FROM nsr")
+    if args.reference == "nsr":
+        nsrDb = sqlite3.connect(args.nsr)
+        nsrCursor = nsrDb.cursor()
+        table = "nsr"
+    if args.reference == "gbif":
+        nsrDb = sqlite3.connect(args.gbif)
+        nsrCursor = nsrDb.cursor()
+        table = "gbif"
+    nsrCursor.execute("SELECT species_rank FROM "+table)
     hits = nsrCursor.fetchall()
     allSpecies = []
     for x in hits:
@@ -54,7 +64,16 @@ def getSpeciesList(nsrCursor):
     return allSpecies
 
 def getGenusList(nsrCursor):
-    nsrCursor.execute("SELECT genus_rank FROM nsr")
+    if args.reference == "nsr":
+        nsrDb = sqlite3.connect(args.nsr)
+        nsrCursor = nsrDb.cursor()
+        table = "nsr"
+    if args.reference == "gbif":
+        nsrDb = sqlite3.connect(args.gbif)
+        nsrCursor = nsrDb.cursor()
+        table = "gbif"
+
+    nsrCursor.execute("SELECT genus_rank FROM "+table)
     hits = nsrCursor.fetchall()
     allGenera = []
     for x in hits:
@@ -80,15 +99,22 @@ def matchSpeciesGenus(taxonomyList, taxonomyHit, rank):
             return False
 
 def matchFamily(taxonomyHit, rank):
-    nsrCursor = sqlite3.connect(args.nsr).cursor()
-    #nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=rank, name=taxonomyHit))
-    nsrCursor.execute("SELECT * FROM nsr WHERE {column} = ? COLLATE NOCASE".format(column=rank), (taxonomyHit,))
+    if args.reference == "nsr":
+        nsrDb = sqlite3.connect(args.nsr)
+        nsrCursor = nsrDb.cursor()
+        table = "nsr"
+    if args.reference == "gbif":
+        nsrDb = sqlite3.connect(args.gbif)
+        nsrCursor = nsrDb.cursor()
+        table = "gbif"
+
+    nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
     hit = nsrCursor.fetchone()
     rankNumbers = {"family_rank":7, "order_rank":8, "class_rank":9, "phylum_rank":10, "kingdom_rank":11}
     if hit is not None:
         return [0, taxonomyHit, hit[rankNumbers[rank]], rank, "match"]
     else:
-        nsrCursor.execute("SELECT DISTINCT {column} FROM nsr".format(column=rank))
+        nsrCursor.execute("SELECT DISTINCT {column} FROM {table}".format(column=rank, table=table))
         hit = nsrCursor.fetchall()
         familyList = []
         if hit is not None:
@@ -108,7 +134,15 @@ def matchFamily(taxonomyHit, rank):
             return False
 
 def matchExact(speciesList, genusList, taxonomyHit):
-    nsrCursor = sqlite3.connect(args.nsr).cursor()
+    if args.reference == "nsr":
+        nsrDb = sqlite3.connect(args.nsr)
+        nsrCursor = nsrDb.cursor()
+        table = "nsr"
+    if args.reference == "gbif":
+        nsrDb = sqlite3.connect(args.gbif)
+        nsrCursor = nsrDb.cursor()
+        table = "gbif"
+
     if taxonomyHit.lower() in speciesList:
         return [0, taxonomyHit, taxonomyHit, "species_rank", "match"]
     elif taxonomyHit.lower() in genusList:
@@ -117,8 +151,7 @@ def matchExact(speciesList, genusList, taxonomyHit):
         rankNumbers = {"family_rank":7, "order_rank":8, "class_rank":9, "phylum_rank":10, "kingdom_rank":11}
         rankList = {"family_rank", "order_rank", "class_rank", "phylum_rank"}
         for rank in rankList:
-            #nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=rank, name=taxonomyHit))
-            nsrCursor.execute("SELECT * FROM nsr WHERE {column} = ? COLLATE NOCASE".format(column=rank), (taxonomyHit,))
+            nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
             hit = nsrCursor.fetchone()
             if hit is not None:
                 return [0, taxonomyHit, hit[rankNumbers[rank]], rank, "match"]
@@ -127,14 +160,22 @@ def matchExact(speciesList, genusList, taxonomyHit):
         return False
 
 def get_entry_from_database(match):
-    nsrCursor = sqlite3.connect(args.nsr).cursor()
-    #nsrCursor.execute("SELECT * FROM nsr WHERE {column} = '{name}' COLLATE NOCASE".format(column=match[-2], name=match[-3]))
-    nsrCursor.execute("SELECT * FROM nsr WHERE {column} = ? COLLATE NOCASE".format(column=match[-2]), (match[-3],))
+    if args.reference == "nsr":
+        nsrDb = sqlite3.connect(args.nsr)
+        nsrCursor = nsrDb.cursor()
+        table = "nsr"
+    if args.reference == "gbif":
+        nsrDb = sqlite3.connect(args.gbif)
+        nsrCursor = nsrDb.cursor()
+        table = "gbif"
+
+    nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=match[-2], name=match[-3]))
     hit = nsrCursor.fetchone()
     if hit is not None:
         if hit[4] == "synonym":
             synonymName = hit[5]
-            nsrCursor.execute("""SELECT * FROM nsr WHERE taxonID=?""", (str(hit[3]),))
+            params = (str(hit[3]),)
+            nsrCursor.execute("SELECT * FROM {table} WHERE taxonID=?".format(table=table), params)
             hit = nsrCursor.fetchone()
             #output = outputLines.append([name[2], matchType, synonymName, hit[5],hit[11],hit[10],hit[9],hit[8],hit[7],hit[6], hit[-1]]
             return [hit, "synonym"]
@@ -234,8 +275,12 @@ def match_nameslist(speciesList, genusList, taxonomyHit):
     return output
 
 def taxonmatch_nsr_blast():
-    nsrDb = sqlite3.connect(args.nsr)
-    nsrCursor = nsrDb.cursor()
+    if args.reference == "nsr":
+        nsrDb = sqlite3.connect(args.nsr)
+        nsrCursor = nsrDb.cursor()
+    if args.reference == "gbif":
+        nsrDb = sqlite3.connect(args.gbif)
+        nsrCursor = nsrDb.cursor()
     taxonomyHits = read_blast_input()
     speciesList = getSpeciesList(nsrCursor)
     genusList = getGenusList(nsrCursor)
@@ -250,8 +295,14 @@ def taxonmatch_nsr_blast():
             outputFile.write("\t".join(result)+"\n")
 
 def taxonmatch_nsr_nameslist():
-    nsrDb = sqlite3.connect(args.nsr)
-    nsrCursor = nsrDb.cursor()
+    if args.reference == "nsr":
+        nsrDb = sqlite3.connect(args.nsr)
+        nsrCursor = nsrDb.cursor()
+    if args.reference == "gbif":
+        nsrDb = sqlite3.connect(args.gbif)
+        nsrCursor = nsrDb.cursor()
+
+
     taxonomyHits = read_nameslist_input()
     speciesList = getSpeciesList(nsrCursor)
     genusList = getGenusList(nsrCursor)

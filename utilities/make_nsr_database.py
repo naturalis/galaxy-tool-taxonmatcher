@@ -32,10 +32,7 @@ def add_nsr_taxonomy():
 def main():
     make_database()
     add_nsr_taxonomy()
-    #cursor.execute("SELECT species FROM nsr WHERE species LIKE '%carex paniculata × remot%'")
-    #print(cursor.fetchone()[0])
     cursor.execute("CREATE INDEX index_nsr_species ON nsr (species_rank);")
-    #ursor.execute("CREATE INDEX index_gbif_genus ON gbif (genus);")
 
 if __name__ == "__main__":
     main()

@@ -1,11 +1,18 @@
 <tool id="taxonmatcher" name="Taxonmatcher">
-    <description>Find taxonomy</description>
-    <command interpreter="bash">
-        taxonmatcher.sh
+    <description></description>
+    <requirements>
+      <!--<requirement type="package" version="3.7.0">python</requirement>-->
+      <!--<requirement type="package">biopython</requirement>-->
+      <!--<requirement type="package">fuzzywuzzy</requirement>-->
+    </requirements>
+    <command>
+      <![CDATA[
+        bash '$__tool_directory__/taxonmatcher.sh'
         $input_type.input
         $input_type.type
         $reference
         $output
+        ]]>
     </command>
     <macros>
         <macro name="blast_input">
@@ -30,6 +37,7 @@
         </conditional>
         <param name="reference" type="select" multiple="false" label="Reference database">
             <option value="nsr" selected="true">Nederlands soorten register</option>
+            <option value="gbif">GBIF (beta)</option>
         </param>
     </inputs>
     <outputs>
