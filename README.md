@@ -49,5 +49,6 @@ Create the database (currently the path to Taxon.txt is hardcoded)
 ```
 utilities/make_nsr_database.py
 ```
+### Add the database path to taxonmatcher.sh
 
 
