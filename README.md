@@ -38,7 +38,7 @@ unzip backbone-current.zip
 ```
 Create the database (currently the path to Taxon.tsv is hardcoded)
 ```
-python3 ../utilities/make_gbif_database.py
+python3 utilities/make_gbif_database.py
 ```
 ### Creating the reference database for The Dutch species register
 Download the taxonomy backbone
