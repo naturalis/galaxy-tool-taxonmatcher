@@ -2,7 +2,7 @@
 Find for your input taxonomy the taxonomy from an other database, currently GBIF (beta, memory consumption need to be improved) and The Dutch species register.
 
 NOTE:
-This script is somewhat in a beta fase, due to the addition of gbif and added functionalities. The code should be re-written in a more logic and efficient way. The script works but is not heavely tested. 
+This script is now back in a somewhat beta fase due to the addition of gbif and later added functionalities. The code should be re-written in a more logic and efficient way. The script works but is not heavely tested. 
 
 ## Getting Started
 ### Prerequisites
