@@ -23,12 +23,6 @@ cd /home/galaxy/Tools
 ```
 sudo git clone https://github.com/naturalis/galaxy-tool-taxonmatcher
 ```
-```
-sudo chmod 777 galaxy-tool-taxonmatcher/taxonmatcher.py
-```
-```
-sudo ln -s /home/galaxy/Tools/galaxy-tool-taxonmatcher/taxonmatcher.py /usr/local/bin/taxonmatcher.py
-```
 ### Creating the reference database for GBIF
 Download the taxonomy backbone
 ```
@@ -43,4 +37,17 @@ Create the database (currently the path to Taxon.tsv is hardcoded)
 python3 ../utilities/make_gbif_database.py
 ```
 ### Creating the reference database for The Dutch species register
-Will be added soon
+Download the taxonomy backbone
+```
+wget http://api.biodiversitydata.nl/v2/taxon/dwca/getDataSet/nsr
+```
+unzip
+```
+unzip nsr
+```
+Create the database (currently the path to Taxon.txt is hardcoded)
+```
+utilities/make_nsr_database.py
+```
+
+
