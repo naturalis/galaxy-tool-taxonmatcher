@@ -25,7 +25,7 @@ Installing the tool for use in Galaxy
 cd /home/galaxy/Tools
 ```
 ```
-sudo git clone https://github.com/naturalis/galaxy-tool-taxonmatcher
+git clone https://github.com/naturalis/galaxy-tool-taxonmatcher
 ```
 ### Creating the reference database for GBIF
 Download the taxonomy backbone
