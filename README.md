@@ -33,6 +33,9 @@ git clone https://github.com/naturalis/galaxy-tool-taxonmatcher
 ### Creating the reference database for GBIF
 Download the taxonomy backbone
 ```
+cd /home/galaxy/Tools/galaxy-tool-taxonmatcher
+```
+```
 wget http://rs.gbif.org/datasets/backbone/backbone-current.zip
 ```
 unzip
