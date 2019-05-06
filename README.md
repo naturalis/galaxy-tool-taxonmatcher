@@ -14,9 +14,10 @@ fuzzy wuzzy https://github.com/seatgeek/fuzzywuzzy<br />
 ```
 pip install fuzzywuzzy[speedup]
 ```
-**note: **  
+NOTE:  
 *fuzzywuzzy requires `gcc` to be installed. If this is not the case,
-run ```sudo apt install gcc ``` (user: ubuntu) first.*
+run ```sudo apt install gcc ``` (user: ubuntu) first.*  
+
 biopython
 ```
 pip install biopython
