@@ -57,5 +57,9 @@ unzip nsr
 ```
 Create the database (currently the path to Taxon.txt is hardcoded)
 ```
-utilities/make_nsr_database.py
+python 3 utilities/make_nsr_database.py
+```
+Add the following line to /home/galaxy/galaxy/config/tool_conf.xml
+```
+<tool file="/home/galaxy/Tools/galaxy-tool-taxonmatcher/taxonmatcher.xml" />
 ```
