@@ -60,6 +60,7 @@ Create the database (currently the path to Taxon.txt is hardcoded)
 python 3 utilities/make_nsr_database.py
 ```
 Add the path to the database files (nsr_taxonmatcher and gbif_taxonmatcher) to taxonmatcher.sh
+<br />
 Add the following line to /home/galaxy/galaxy/config/tool_conf.xml
 ```
 <tool file="/home/galaxy/Tools/galaxy-tool-taxonmatcher/taxonmatcher.xml" />
