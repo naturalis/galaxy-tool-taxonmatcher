@@ -218,17 +218,17 @@ def create_output_line_blast(databaseHit, match, input):
 def create_output_line_nameslist(databaseHit, match, input):
     if databaseHit:
         if match[3] == "species_rank":
-            output = [input, match[-1], databaseHit[1],databaseHit[0][5],match[3][0:-5], databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],databaseHit[0][8],databaseHit[0][7],databaseHit[0][6], databaseHit[0][-1], ""]
+            output = [input, match[-1], databaseHit[1],databaseHit[0][5],"N/A", databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],databaseHit[0][8],databaseHit[0][7],databaseHit[0][6], databaseHit[0][-1], ""]
         elif match[3] == "genus_rank":
-            output = [input, match[-1], databaseHit[1],databaseHit[0][6],match[3][0:-5], databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],databaseHit[0][8],databaseHit[0][7],databaseHit[0][6], "", ""]
+            output = [input, match[-1], databaseHit[1],databaseHit[0][6],"N/A", databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],databaseHit[0][8],databaseHit[0][7],databaseHit[0][6], "", ""]
         elif match[3] == "family_rank":
-            output = [input, match[-1], databaseHit[1],databaseHit[0][7],match[3][0:-5], databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],databaseHit[0][8],databaseHit[0][7], "", "",""]
+            output = [input, match[-1], databaseHit[1],databaseHit[0][7],"N/A", databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],databaseHit[0][8],databaseHit[0][7], "", "",""]
         elif match[3] == "order_rank":
-            output = [input, match[-1], databaseHit[1],databaseHit[0][8],match[3][0:-5], databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],databaseHit[0][8],"", "", "",""]
+            output = [input, match[-1], databaseHit[1],databaseHit[0][8],"N/A", databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],databaseHit[0][8],"", "", "",""]
         elif match[3] == "class_rank":
-            output = [input, match[-1], databaseHit[1],databaseHit[0][9],match[3][0:-5], databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],"","", "", "",""]
+            output = [input, match[-1], databaseHit[1],databaseHit[0][9],"N/A", databaseHit[0][11],databaseHit[0][10],databaseHit[0][9],"","", "", "",""]
         elif match[3] == "phylum_rank":
-            output = [input, match[-1], databaseHit[1],databaseHit[0][10],match[3][0:-5], databaseHit[0][11],databaseHit[0][10],"","","", "", "",""]
+            output = [input, match[-1], databaseHit[1],databaseHit[0][10],"N/A", databaseHit[0][11],databaseHit[0][10],"","","", "", "",""]
 
     else:
         output = [input, "Not found", "","","", "","","","","", "", "", ""]
