@@ -52,12 +52,14 @@ def getSpeciesList(nsrCursor):
         nsrDb = sqlite3.connect(args.nsr)
         nsrCursor = nsrDb.cursor()
         table = "nsr"
+        nsrCursor.execute("SELECT species_rank FROM {table}".format(table=table))
+        hits = nsrCursor.fetchall()
     if args.reference == "gbif":
         nsrDb = sqlite3.connect(args.gbif)
         nsrCursor = nsrDb.cursor()
         table = "gbif"
-    nsrCursor.execute("SELECT species_rank FROM "+table)
-    hits = nsrCursor.fetchall()
+        nsrCursor.execute("SELECT species_rank FROM {table} WHERE taxonomicStatus='accepted'".format(table=table))
+        hits = nsrCursor.fetchall()
     allSpecies = []
     for x in hits:
         allSpecies.append(x[0].lower())
@@ -68,13 +70,15 @@ def getGenusList(nsrCursor):
         nsrDb = sqlite3.connect(args.nsr)
         nsrCursor = nsrDb.cursor()
         table = "nsr"
+        nsrCursor.execute("SELECT genus_rank FROM {table}".format(table=table))
+        hits = nsrCursor.fetchall()
     if args.reference == "gbif":
         nsrDb = sqlite3.connect(args.gbif)
         nsrCursor = nsrDb.cursor()
         table = "gbif"
+        nsrCursor.execute("SELECT genus_rank FROM {table} WHERE taxonomicStatus='accepted'".format(table=table))
+        hits = nsrCursor.fetchall()
 
-    nsrCursor.execute("SELECT genus_rank FROM "+table)
-    hits = nsrCursor.fetchall()
     allGenera = []
     for x in hits:
         allGenera.append(x[0].lower())
@@ -103,13 +107,15 @@ def matchFamily(taxonomyHit, rank):
         nsrDb = sqlite3.connect(args.nsr)
         nsrCursor = nsrDb.cursor()
         table = "nsr"
+        nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
+        hit = nsrCursor.fetchone()
     if args.reference == "gbif":
         nsrDb = sqlite3.connect(args.gbif)
         nsrCursor = nsrDb.cursor()
         table = "gbif"
+        nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' AND taxonomicStatus='accepted' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
+        hit = nsrCursor.fetchone()
 
-    nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
-    hit = nsrCursor.fetchone()
     rankNumbers = {"family_rank":7, "order_rank":8, "class_rank":9, "phylum_rank":10, "kingdom_rank":11}
     if hit is not None:
         return [0, taxonomyHit, hit[rankNumbers[rank]], rank, "match"]
@@ -151,7 +157,10 @@ def matchExact(speciesList, genusList, taxonomyHit):
         rankNumbers = {"family_rank":7, "order_rank":8, "class_rank":9, "phylum_rank":10, "kingdom_rank":11}
         rankList = {"family_rank", "order_rank", "class_rank", "phylum_rank"}
         for rank in rankList:
-            nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
+            if args.reference == "gbif":
+                nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' AND taxonomicStatus='accepted' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
+            if args.reference == "nsr":
+                nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' AND COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
             hit = nsrCursor.fetchone()
             if hit is not None:
                 return [0, taxonomyHit, hit[rankNumbers[rank]], rank, "match"]
@@ -164,13 +173,15 @@ def get_entry_from_database(match):
         nsrDb = sqlite3.connect(args.nsr)
         nsrCursor = nsrDb.cursor()
         table = "nsr"
+        nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=match[-2], name=match[-3]))
+        hit = nsrCursor.fetchone()
     if args.reference == "gbif":
         nsrDb = sqlite3.connect(args.gbif)
         nsrCursor = nsrDb.cursor()
         table = "gbif"
+        nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' AND taxonomicStatus='accepted' COLLATE NOCASE".format(table=table, column=match[-2], name=match[-3]))
+        hit = nsrCursor.fetchone()
 
-    nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=match[-2], name=match[-3]))
-    hit = nsrCursor.fetchone()
     if hit is not None:
         if hit[4] == "synonym":
             synonymName = hit[5]
