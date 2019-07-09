@@ -53,7 +53,7 @@ wget http://api.biodiversitydata.nl/v2/taxon/dwca/getDataSet/nsr
 ```
 unzip
 ```
-unzip nsr
+unzip -p nsr Taxa.txt > Taxa.txt
 ```
 Create the database (currently the path to Taxon.txt is hardcoded)
 ```
