@@ -160,7 +160,7 @@ def matchExact(speciesList, genusList, taxonomyHit):
             if args.reference == "gbif":
                 nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' AND taxonomicStatus='accepted' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
             if args.reference == "nsr":
-                nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' AND COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
+                nsrCursor.execute("SELECT * FROM {table} WHERE {column} = '{name}' COLLATE NOCASE".format(table=table, column=rank, name=taxonomyHit))
             hit = nsrCursor.fetchone()
             if hit is not None:
                 return [0, taxonomyHit, hit[rankNumbers[rank]], rank, "match"]
