@@ -6,22 +6,9 @@ This script is now back in a somewhat beta fase due to the addition of gbif and 
 
 ## Getting Started
 ### Prerequisites
-Jellyfish https://github.com/jamesturk/jellyfish<br />
-```
-pip install jellyfish
-```
-fuzzy wuzzy https://github.com/seatgeek/fuzzywuzzy<br />
-```
-pip install fuzzywuzzy[speedup]
-```
-NOTE: **fuzzywuzzy** requires `gcc` to be installed. If this is not the case,
-run ```sudo apt install gcc ``` (user: ***ubuntu***) first. 
+Necessary packages (biopython, fuzzywuzzy, jellyfish) are now included as `<requirements>` in **`.yaml`**. The gcc compiler has not (yet) been added to the requirements [though it is a dependency](#Previous or standalone install) of fuzzywuzzy.
 
-biopython
-```
-pip install biopython
-```
-python3
+
 ### Installing
 Installing the tool for use in Galaxy
 ```
@@ -59,9 +46,27 @@ Create the database (currently the path to Taxon.txt is hardcoded)
 ```
 python 3 utilities/make_nsr_database.py
 ```
-Add the path to the database files (nsr_taxonmatcher and gbif_taxonmatcher) to taxonmatcher.sh
-<br />
+Add the path to the database files (nsr_taxonmatcher and gbif_taxonmatcher) to taxonmatcher.sh  
+
 Add the following line to /home/galaxy/galaxy/config/tool_conf.xml
 ```
 <tool file="/home/galaxy/Tools/galaxy-tool-taxonmatcher/taxonmatcher.xml" />
 ```
+### Previous or standalone install
+
+Jellyfish https://github.com/jamesturk/jellyfish<br />
+```
+pip install jellyfish
+```
+fuzzy wuzzy https://github.com/seatgeek/fuzzywuzzy<br />
+```
+pip install fuzzywuzzy[speedup]
+```
+NOTE: **fuzzywuzzy** requires `gcc` to be installed. If this is not the case,
+run ```sudo apt install gcc ``` (user: ***ubuntu***) first. 
+
+biopython
+```
+pip install biopython
+```
+python3
