@@ -6,7 +6,7 @@ This script is now back in a somewhat beta fase due to the addition of gbif and 
 
 ## Getting Started
 ### Prerequisites
-Necessary packages (biopython, fuzzywuzzy, jellyfish) are now included as `<requirements>` in **`.yaml`**. The gcc compiler has not (yet) been added to the requirements [though it is a dependency](#Previous or standalone install) of fuzzywuzzy.
+Necessary packages (biopython, fuzzywuzzy, jellyfish) are now included as `<requirements>` in **`.yaml`**. The gcc compiler has not (yet) been added to the requirements [though it is a dependency](#previous-or-standalone-install) of fuzzywuzzy.
 
 
 ### Installing
