@@ -2,7 +2,7 @@
 Find for your input taxonomy the taxonomy from an other database, currently GBIF (beta, memory consumption need to be improved) and The Dutch species register.
 
 NOTE:
-This script is now back in a somewhat beta fase due to the addition of gbif and later added functionalities. The code should be re-written in a more logic and efficient way. The script works but is not heavely tested. 
+This script is now back in a somewhat beta fase due to the addition of gbif and later added functionalities. The code should be re-written in a more logic and efficient way. The script works but is not heavily tested. 
 
 ## Getting Started
 ### Prerequisites
@@ -44,7 +44,7 @@ unzip -p nsr Taxa.txt > Taxa.txt
 ```
 Create the database (currently the path to Taxon.txt is hardcoded)
 ```
-python 3 utilities/make_nsr_database.py
+python3 utilities/make_nsr_database.py
 ```
 Add the path to the database files (nsr_taxonmatcher and gbif_taxonmatcher) to taxonmatcher.sh  
 
