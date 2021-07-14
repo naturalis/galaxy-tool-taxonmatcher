@@ -33,6 +33,7 @@ Create the database (currently the path to Taxon.tsv is hardcoded)
 ```
 python3 utilities/make_gbif_database.py
 ```
+The output file is **gbif_taxonmatcher**
 ### Creating the reference database for The Dutch species register
 Download the taxonomy backbone
 ```
@@ -46,7 +47,10 @@ Create the database (currently the path to Taxon.txt is hardcoded)
 ```
 python3 utilities/make_nsr_database.py
 ```
-Add the path to the database files (nsr_taxonmatcher and gbif_taxonmatcher) to taxonmatcher.sh  
+The output file is **nsr_taxonmatcher**
+### Specify database file location
+Move the database files (i.e. the output) to the desired location (in our case:\
+/extend/blast_databases/taxonomy/). Add the path to the database files to taxonmatcher.sh  
 
 Add the following line to /home/galaxy/galaxy/config/tool_conf.xml
 ```
