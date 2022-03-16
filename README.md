@@ -27,7 +27,7 @@ wget https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip
 ```
 unzip
 ```
-unzip -p backbone-current.zip Taxon.tsv > Taxon.tsv
+unzip -p backbone.zip backbone/Taxon.tsv > Taxon.tsv
 ```
 Create the database (currently the path to Taxon.tsv is hardcoded)
 ```
