@@ -49,7 +49,7 @@ python3 utilities/make_nsr_database.py
 ```
 The output file is **nsr_taxonmatcher**
 ### Specify database file location
-Move the database files (i.e. the output) to the desired location (in our case:\
+Move the database files (gbif_taxonmatcher and nsr_taxonmatcher) to the desired location (in our case:\
 /extend/blast_databases/taxonomy/). Add the path to the database files to taxonmatcher.sh  
 
 Add the following line to /home/galaxy/galaxy/config/tool_conf.xml
