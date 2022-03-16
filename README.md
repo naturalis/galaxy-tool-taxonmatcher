@@ -23,7 +23,7 @@ Download the taxonomy backbone
 cd /home/galaxy/Tools/galaxy-tool-taxonmatcher
 ```
 ```
-wget http://rs.gbif.org/datasets/backbone/backbone-current.zip
+wget https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip
 ```
 unzip
 ```
