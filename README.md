@@ -1,76 +1,53 @@
 # galaxy-tool-taxonmatcher
-Find for your input taxonomy the taxonomy from an other database, currently GBIF (beta, memory consumption need to be improved) and The Dutch species register.
+Find for your input taxonomy the taxonomy from an other database, currently GBIF and The Dutch species register.  
 
-NOTE:
-This script is now back in a somewhat beta fase due to the addition of gbif and later added functionalities. The code should be re-written in a more logic and efficient way. The script works but is not heavily tested. 
+## Installation
+### Manual
+Clone this repo in your Galaxy ***Tools*** directory:  
+`git clone https://github.com/naturalis/galaxy-tool-taxonmatcher`  
 
-## Getting Started
-### Prerequisites
-Necessary packages (biopython, fuzzywuzzy, jellyfish) are now included as `<requirements>` in **`.yaml`**. The gcc compiler has not (yet) been added to the requirements [though it is a dependency](#previous-or-standalone-install) of fuzzywuzzy.
+Make the python script executable:  
+`chmod 755 galaxy-tool-taxonmatcher/taxonmatcher.sh`  
+`chmod 755 galaxy-tool-taxonmatcher/taxonmatcher.py` 
 
+Append the file ***tool_conf.xml***:    
+`<tool file="/path/to/Tools/galaxy-tool-taxonmatcher/taxonmatcher.sh" />`  
 
-### Installing
-Installing the tool for use in Galaxy
-```
-cd /home/galaxy/Tools
-```
-```
-git clone https://github.com/naturalis/galaxy-tool-taxonmatcher
-```
+### Ansible
+Depending on your setup the [ansible.builtin.git](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html) module could be used.  
+[Install the tool](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html#examples) 
+by including the following in your dedicated ***.yml** file:  
+
+`  - repo: https://github.com/naturalis/galaxy-tool-taxonmatcher`  
+&ensp;&ensp;`file: taxonmatcher.xml`  
+&ensp;&ensp;`version: master`  
+
+### Note
+The instructions above assume python3 and gcc compiler are installed.  
+
+## Create reference databases  
+The steps below shoud be executed from the galaxy-tool-taxonmatcher folder  
+in your Galaxy ***Tools*** directory.  
+
 ### Creating the reference database for GBIF
-Download the taxonomy backbone
-```
-cd /home/galaxy/Tools/galaxy-tool-taxonmatcher
-```
-```
-wget https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip
-```
-unzip
-```
-unzip -p backbone.zip backbone/Taxon.tsv > Taxon.tsv
-```
-Create the database (currently the path to Taxon.tsv is hardcoded)
-```
-python3 utilities/make_gbif_database.py
-```
-The output file is **gbif_taxonmatcher**
-### Creating the reference database for The Dutch species register
-Download the taxonomy backbone
-```
-wget http://api.biodiversitydata.nl/v2/taxon/dwca/getDataSet/nsr
-```
-unzip
-```
-unzip -p nsr Taxa.txt > Taxa.txt
-```
-Create the database (currently the path to Taxon.txt is hardcoded)
-```
-python3 utilities/make_nsr_database.py
-```
-The output file is **nsr_taxonmatcher**
-### Specify database file location
-Move the database files (gbif_taxonmatcher and nsr_taxonmatcher) to the desired location (in our case:\
-/extend/blast_databases/taxonomy/). Add the path to the database files to taxonmatcher.sh  
+Download the taxonomy backbone  
+`wget https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip`  
+unzip  
+`unzip -p backbone.zip backbone/Taxon.tsv > Taxon.tsv`  
+Create the database (currently the path to Taxon.tsv is hardcoded)  
+`python3 utilities/make_gbif_database.py`  
+The output file is **gbif_taxonmatcher**  
 
-Add the following line to /home/galaxy/galaxy/config/tool_conf.xml
-```
-<tool file="/home/galaxy/Tools/galaxy-tool-taxonmatcher/taxonmatcher.xml" />
-```
-### Previous or standalone install
+### Creating the reference database for The Dutch species register  
+Download the taxonomy backbone  
+`wget http://api.biodiversitydata.nl/v2/taxon/dwca/getDataSet/nsr`  
+unzip  
+`unzip -p nsr Taxa.txt > Taxa.txt`  
+Create the database (currently the path to Taxon.txt is hardcoded)  
+`python3 utilities/make_nsr_database.py`  
+The output file is **nsr_taxonmatcher**  
 
-Jellyfish https://github.com/jamesturk/jellyfish<br />
-```
-pip install jellyfish
-```
-fuzzy wuzzy https://github.com/seatgeek/fuzzywuzzy<br />
-```
-pip install fuzzywuzzy[speedup]
-```
-NOTE: **fuzzywuzzy** requires `gcc` to be installed. If this is not the case,
-run ```sudo apt install gcc ``` (user: ***ubuntu***) first. 
-
-biopython
-```
-pip install biopython
-```
-python3
+### Specify database file location  
+Move the database files (gbif_taxonmatcher and nsr_taxonmatcher) to the desired location  
+(in our case: /data/blast_databases/taxonomy/). Make sure the path in **taxonmatcher.sh**  
+corresponds to this location.  
