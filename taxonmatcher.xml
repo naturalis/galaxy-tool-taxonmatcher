@@ -1,10 +1,10 @@
 <tool id="taxonmatcher" name="Taxonmatcher">
     <description></description>
     <requirements>
-        <requirement type="package" version="3.7.0">python</requirement>
-        <requirement type="package">biopython</requirement>
-        <requirement type="package">fuzzywuzzy</requirement>
-        <requirement type="package">jellyfish</requirement>
+        <!-- <requirement type="package" version="3.8.2">python</requirement> -->
+        <requirement type="package" version="1.76">biopython</requirement>
+        <requirement type="package" version="0.18.0">fuzzywuzzy</requirement>
+        <requirement type="package" version="0.9.0">jellyfish</requirement>
     </requirements>
     <command>
       <![CDATA[
