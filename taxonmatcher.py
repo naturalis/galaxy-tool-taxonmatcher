@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 from taxonmatcher_scripts.nsr import Nsr #Nederlands soorten register
 import argparse
 # Retrieve the commandline arguments
