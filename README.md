@@ -33,7 +33,8 @@ in your Galaxy ***Tools*** directory.
 Download the taxonomy backbone  
 `wget https://hosted-datasets.gbif.org/datasets/backbone/current/backbone.zip`  
 unzip  
-`unzip -p backbone.zip backbone/Taxon.tsv > Taxon.tsv`  
+`unzip -p backbone.zip Taxon.tsv > Taxon.tsv`  
+Taxon.tsv should be in path/to/galaxy-tool-taxonmatcher/  
 Create the database (currently the path to Taxon.tsv is hardcoded)  
 `python3 utilities/make_gbif_database.py`  
 The output file is **gbif_taxonmatcher**  
@@ -43,6 +44,7 @@ Download the taxonomy backbone
 `wget http://api.biodiversitydata.nl/v2/taxon/dwca/getDataSet/nsr`  
 unzip  
 `unzip -p nsr Taxa.txt > Taxa.txt`  
+Taxa.txt should be in path/to/galaxy-tool-taxonmatcher/  
 Create the database (currently the path to Taxon.txt is hardcoded)  
 `python3 utilities/make_nsr_database.py`  
 The output file is **nsr_taxonmatcher**  
