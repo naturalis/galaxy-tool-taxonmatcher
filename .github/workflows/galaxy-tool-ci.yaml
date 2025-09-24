@@ -1,0 +1,48 @@
+name: Galaxy Tool CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v*'  # Push events to tags matching v*, i.e. v1.0, v20.15.10
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [ published ]
+
+jobs:
+  
+  deploy:
+    # needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Create Planemo config
+        env:
+          USER: ${{ secrets.USER }}
+          KEY: ${{ secrets.KEY }}
+          EMAIL: ${{ secrets.EMAIL }}
+          PASS: ${{ secrets.PASS }}
+        run: |
+          mkdir -p $HOME/.planemo
+          cat > $HOME/.planemo.yml << EOF
+          shed_username: $USER # your ToolShed username
+          sheds:
+            toolshed:
+              key: $KEY        # your ToolShed API key, under 'User > API Keys'
+              email: $EMAIL    # your ToolShed email
+              password: $PASS  # your ToolShed password
+          EOF
+
+      - name: Install Planemo
+        run: pip install planemo
+
+      - name: Update Tool Shed
+        run: planemo shed_update --shed_target toolshed
