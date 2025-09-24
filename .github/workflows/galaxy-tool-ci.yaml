@@ -1,0 +1,16 @@
+name: Galaxy Tool CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main, master ]
+  release:
+    types: [ published ]
+
+jobs:
+  deploy:
+    uses: naturalis/galaxy-ci-template/.github/workflows/galaxy-tool-ci-template.yaml@main
+    secrets: inherit   

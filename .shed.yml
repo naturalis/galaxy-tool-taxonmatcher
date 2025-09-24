@@ -1,0 +1,13 @@
+name: naturalis_taxonmatcher
+owner:  luka
+description: "Naturalis taxonmatcher" 
+long_description: |
+  "Find for your input taxonomy the taxonomy from an other database, currently GBIF and The Dutch species register."
+remote_repository_url: https://github.com/naturalis/galaxy-tool-taxonmatcher.git
+homepage_url: https://github.com/naturalis/galaxy-tool-taxonmatcher.git
+type: unrestricted
+categories:
+   - "Metagenomics"
+auto_tool_repositories:
+  name_template: naturalis_taxonmatcher
+  description_template: naturalis_taxonmatcher

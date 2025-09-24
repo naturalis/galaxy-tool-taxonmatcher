@@ -1,4 +1,4 @@
-<tool id="taxonmatcher" name="Taxonmatcher">
+<tool id="taxonmatcher" name="Taxonmatcher" version="1.0">
     <description></description>
     <requirements>
         <!-- <requirement type="package" version="3.8.2">python</requirement> -->
@@ -52,6 +52,8 @@
         </test>
     </tests>
     <help>
-        Find taxonomy in a reference database
+        Find taxonomy in a reference database; currently GBIF and The Dutch species register.
+
+
     </help>
 </tool>
