@@ -12,5 +12,5 @@ on:
 
 jobs:
   deploy:
-    uses: naturalis/galaxy-tool-ci-template/.github/workflows/galaxy-tool-ci-template.yaml@main
+    uses: naturalis/galaxy-tools-ci-template/.github/workflows/galaxy-tool-ci-template.yaml@main
     secrets: inherit   
